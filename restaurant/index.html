@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>订餐</title>
+	<link rel="stylesheet"  href="lib/jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.css" />
+
+    <script src="lib/jquery.js"></script>
+	<script src="lib/jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+    <script src='data/foods.json' type='text/javascript'></script>
+    <script src='data/restaurants.json' type='text/javascript'></script>
+    <script src='data/users.json' type='text/javascript'></script>
+    <script src="js/application.js"></script>
+</head>
+<body>
+  <div data-role="page" id="main">
+    <div data-role="header">
+      <h1>订餐</h1>
+    </div><!-- /header -->
+  
+    <div data-role="content"> 
+     <a href="#order" data-role="button">帮订餐</a>
+     <a href="#show_orders"  data-role="button">看订单</a>
+    </div><!-- /content -->
+  </div>
+  
+  <div data-role="page"  data-add-back-btn="true" id="order">
+    <div data-role="header">
+      <h1>订餐</h1>
+    </div><!-- /header -->
+  
+    <div data-role="content"> 
+      <label for="basic">人：</label>
+      <input type="text" name="name" id="user" value="" readonly />
+      <a href="#peoples"  data-role="button">选人</a>
+      
+      <label for="basic">餐厅：</label>
+      <input type="text" name="name" id="restaurant" value=""  readonly/>
+      <a href="#restaurants"  data-role="button">选餐厅</a>
+      
+      <label for="basic">套餐：</label>
+      <input type="text" name="name" id="food" value=""  readonly/>
+      <a href="#foods"  data-role="button" id="choose-food">选套餐</a>
+      <a href="#show_orders"  data-role="button">确定</a>
+    </div><!-- /content -->
+  </div>
+
+  <div data-role="page"   data-add-back-btn="true" id="show_orders">
+    <div data-role="header">
+      <h1>订餐</h1>
+    </div><!-- /header -->
+  
+    <div data-role="content"> 
+      Orders
+    </div><!-- /content -->
+  </div>
+
+  <div data-role="page"   data-add-back-btn="true" id="peoples">
+    <div data-role="header">
+      <h1>选人</h1>
+    </div>       
+      <ul id="userList" data-role="listview" data-theme="c"> 
+  </div>
+  
+  <div data-role="page"   data-add-back-btn="true" id="restaurants">
+    <div data-role="header">
+      <h1>选餐厅</h1>
+    </div>       
+      <ul id="restaurantList" data-role="listview" data-theme="c"> 
+  </div>
+
+  <div data-role="page"   data-add-back-btn="true" id="foods">
+    <div data-role="header">
+      <h1>选套餐</h1>
+    </div>       
+      <ul id="foodList" data-role="listview" data-theme="c"> 
+  </div>
+  
+  <div data-role="popup" id="alertChooseRestaurant">
+    <p>Please choose restaurant first.<p>
+  </div>
+
+</body>
+</body>
+</html>
