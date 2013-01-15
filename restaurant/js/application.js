@@ -1,32 +1,42 @@
 $(document).ready(function(){
   initListView(users,"#userList");
   initListView(restaurants,"#restaurantList");
-  appendClickFunction('#userList','#user');
-  appendClickFunction('#restaurantList','#restaurant');
-  appendButtonClickFunction('#choose-food');
+  appendListItemClickFunction('#userList','#user');
+  appendListItemClickFunction('#restaurantList','#restaurant');
+  appendListItemClickFunction('#foodList','#food');
+  appendButtonClickFunction('#confirm');
+  $(document).bind( "pagebeforechange", beforeChange);
 });
-
+var orders = '[]';
 function initListView(data, selector){
   $.each(data,function(i, dataItem){
-    $(selector).append('<li><a href="#order">' + dataItem.name + '</a></li>');   
+    $(selector).append('<li><a class ="ui-link-inherit" href="#order">' + constructHtmlContent(dataItem) + '</a></li>');   
   });
   $("selector").listview("refresh");
 }
 
-function appendClickFunction(listSelector,textSelector){
+function constructHtmlContent(dataItem) {
+  var content = '';
+  var price = dataItem.price;
+  if(!isEmptyString(price)) {
+    content += '<p class="ui-li-aside ui-li-desc">￥<strong>'+ price +'</strong></p>'
+  }
+  content += '<h3 class="ui-li-leading">' + dataItem.name + '</h3>';
+  return content
+}
+
+function appendListItemClickFunction(listSelector,textSelector){
   $(listSelector).on('click', 'li', function() {
         $(textSelector).val(this.innerText);
     });
 }
-
-function appendButtonClickFunction(selector) {
+function appendButtonClickFunction(selector){
   $(selector).on('click', function() {
-    initListView(getFoodsData(foods),"#foodList");
-     var restaurant = $('#restaurant').val();
-     if(restaurant == null || restaurant == ''){
-        return false;
+    if(isValidOrder()){
+        orders += createOrderJsonString();
+      }else{
+        alert("订单不合法，请确认所有项都已选！")
       }
-      return false;  
     });
 }
 
@@ -35,3 +45,39 @@ function getFoodsData(data){
   return foods[jQuery.trim(restaurant)];
 }
 
+function createOrderJsonString() {
+  var json = '{';
+  json += 'user:'+ getFieldValue('#user')+',';
+  json += 'restaurant:'+ getFieldValue('#restaurant') + ',';
+  json += 'food:'+ getFieldValue('#food');
+  json +="}"
+  return json;
+}
+
+function getFieldValue(selector) {
+  return $(selector).val();
+}
+
+function beforeChange(e,data){
+  if ( typeof data.toPage === "string" ) {
+    var u = $.mobile.path.parseUrl( data.toPage ),
+    re = /^#foods/;
+    if ( u.hash.search(re) !== -1 ) {
+      var restaurant = getFieldValue('#restaurant');
+      if(isEmptyString(restaurant)){
+        alert("请先选择餐厅！")
+        e.preventDefault();        
+      }else{
+        initListView(getFoodsData(restaurant),'#foodList');
+      }
+    }
+  }
+}
+
+function isEmptyString(para) {
+  return para == null || para == ""
+}
+
+function isValidOrder() {
+  return !(isEmptyString($('#user').val()) || isEmptyString($('#restaurant').val()) || isEmptyString($('#food').val())); 
+}
