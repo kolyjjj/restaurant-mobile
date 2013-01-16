@@ -73,7 +73,7 @@ function initUnOrderedUserItems(selector) {
 
 function constructOrderItemContent(dataItem) {
     var content = '';
-    content += '<p class="ui-li-aside ui-li-desc">￥<strong >' + dataItem.price + '</strong></p>';
+    content += '<p class="ui-li-aside ui-li-desc"><strong >' + dataItem.price + '</strong></p>';
     content += '<h3 class="ui-li-leading">' + dataItem.user + '</h3>';
     content += '<p class="ui-li-desc"><strong>' + dataItem.restaurant + ' ' + dataItem.food + '</strong></p>';
     return content;
@@ -83,7 +83,7 @@ function constructHtmlContent(dataItem) {
     var content = '';
     var price = dataItem.price;
     if (!isEmptyString(price)) {
-        content += '<p class="ui-li-aside ui-li-desc"><strong>' + price + '</strong></p>';
+        content += '<p class="ui-li-aside ui-li-desc">￥<strong>' + price + '</strong></p>';
     }
     content += '<h3 class="ui-li-leading">' + dataItem.name + '</h3>';
     return content
