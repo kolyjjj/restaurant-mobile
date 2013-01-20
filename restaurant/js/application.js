@@ -63,9 +63,9 @@ function initUnOrderedUserDivider(selector) {
 
 function initUnOrderedUserItems(selector) {
     $.each(users, function (i, dataItem) {
-        var test='';
+        var test = '';
 
-        if ($.inArray(dataItem, orderedUser) == -1) {
+        if (!isExist(dataItem, orderedUser)) {
             $(selector).append('<li>' + constructHtmlContent(dataItem) + '</li>');
         }
     });
@@ -73,7 +73,11 @@ function initUnOrderedUserItems(selector) {
 
 function constructOrderItemContent(dataItem) {
     var content = '';
-    content += '<p class="ui-li-aside ui-li-desc"><strong >' + dataItem.price + '</strong></p>';
+    if (parseInt(dataItem.price) > 15) {
+        content += '<p id="order-price" class="ui-li-aside ui-li-desc red"><strong >' + dataItem.unit + dataItem.price + '</strong></p>';
+    } else {
+        content += '<p id="order-price" class="ui-li-aside ui-li-desc"><strong >' + dataItem.unit + dataItem.price + '</strong></p>';
+    }
     content += '<h3 class="ui-li-leading">' + dataItem.user + '</h3>';
     content += '<p class="ui-li-desc"><strong>' + dataItem.restaurant + ' ' + dataItem.food + '</strong></p>';
     return content;
@@ -83,7 +87,7 @@ function constructHtmlContent(dataItem) {
     var content = '';
     var price = dataItem.price;
     if (!isEmptyString(price)) {
-        content += '<p class="ui-li-aside ui-li-desc">￥<strong>' + price + '</strong></p>';
+        content += '<p class="ui-li-aside ui-li-desc">￥ <strong>' + price + '</strong></p>';
     }
     content += '<h3 class="ui-li-leading">' + dataItem.name + '</h3>';
     return content
@@ -125,17 +129,28 @@ function createUser() {
 }
 
 function pushIfNotExist(array, item) {
-    if ($.inArray(item, array) == -1) {
+    if (!isExist(item, array)) {
         array.push(item);
     }
 }
+
+function isExist(item, array) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].name == item.name) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 function createOrder() {
     var order = new Object();
     order.user = getFieldValue('#user');
     order.restaurant = getFieldValue('#restaurant');
-    order.food = getFieldValue('#food').split(" ")[1];
-    order.price = getFieldValue('#food').split(" ")[0];
+    order.food = getFieldValue('#food').split(" ")[2];
+    order.price = getFieldValue('#food').split(" ")[1];
+    order.unit = getFieldValue('#food').split(" ")[0];
     return order;
 }
 
